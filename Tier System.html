@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logic & Problem-Solving Challenge</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --success: #22c55e;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    }
+
+    h1 {
+      font-size: 1.85rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      margin-bottom: 0.75rem;
+    }
+
+    p.subtitle {
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      font-size: 0.95rem;
+    }
+
+    input[type="text"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #0b1120;
+      color: var(--text);
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 10px;
+      z-index: 100;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      padding: 0.85rem 1.25rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      background: #0b1120;
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .question-number {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .scenario {
+      background: #0b1120;
+      border-left: 4px solid var(--accent);
+      padding: 1rem 1.25rem;
+      border-radius: 6px;
+      margin: 1rem 0 1.25rem;
+      font-size: 0.98rem;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.85rem 1rem;
+      background: #0b1120;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 400;
+      transition: all 0.15s ease;
+    }
+
+    .option-label:hover {
+      border-color: var(--accent);
+    }
+
+    .option-label input[type="radio"] {
+      margin-top: 0.3rem;
+      accent-color: var(--accent);
+      transform: scale(1.15);
+    }
+
+    .btn {
+      display: inline-block;
+      width: 100%;
+      padding: 0.95rem 1.5rem;
+      background: var(--accent);
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 1.05rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--accent-hover);
+      color: #fff;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .error-msg {
+      color: var(--danger);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .status-box {
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+    }
+
+    .admin-bar {
+      text-align: right;
+      margin-top: 2rem;
+      font-size: 0.8rem;
+    }
+
+    .admin-bar button {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- STEP 1: REGISTRATION SCREEN -->
+  <div id="registration-screen" class="card">
+    <h1>Logic & Problem-Solving Challenge</h1>
+    <p class="subtitle">No coding or IT background needed. Read each everyday scenario carefully, select your answer, and briefly explain your reasoning for the judges.</p>
+
+    <div id="reg-error" class="error-msg">Please fill in your Full Name, Year of Study, and ID Number to begin.</div>
+
+    <div class="form-group">
+      <label for="student-name">Full Name *</label>
+      <input type="text" id="student-name" placeholder="e.g., Alex Morgan" required />
+    </div>
+
+    <div class="form-group">
+      <label for="student-year">Year of Study *</label>
+      <select id="student-year" required>
+        <option value="">-- Select Your Year --</option>
+        <option value="Year 1">Year 1</option>
+        <option value="Year 2">Year 2</option>
+        <option value="Year 3">Year 3</option>
+        <option value="Year 4">Year 4</option>
+        <option value="Other / Postgraduate">Other / Postgraduate</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="student-id">Student ID Number *</label>
+      <input type="text" id="student-id" placeholder="e.g., 20241092" required />
+    </div>
+
+    <button class="btn" onclick="startQuiz()">Start Challenge</button>
+  </div>
+
+  <!-- STEP 2: QUIZ SCREEN -->
+  <div id="quiz-screen" class="hidden">
+    <div class="topbar">
+      <div>
+        <strong id="display-participant">Participant</strong>
+        <span id="display-id" style="color: var(--muted); font-size: 0.9rem; margin-left: 0.5rem;"></span>
+      </div>
+      <div style="display: flex; gap: 0.6rem;">
+        <span class="badge" id="progress-badge">0 / 10 Answered</span>
+        <span class="badge" id="timer-badge">00:00</span>
+      </div>
+    </div>
+
+    <div id="questions-container"></div>
+
+    <div class="card">
+      <div id="submit-error" class="error-msg">Please answer all 10 questions and include your reasoning before submitting.</div>
+      <button id="submit-btn" class="btn" onclick="submitQuiz()">Submit Answers for Judging</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: CONFIRMATION SCREEN -->
+  <div id="result-screen" class="card hidden status-box">
+    <h1 style="color: var(--success);">Submission Recorded!</h1>
+    <p class="subtitle" id="submission-summary"></p>
+    <p style="color: var(--muted); font-size: 0.95rem;">Your responses and reasoning have been sent to the judges' sheet.</p>
+  </div>
+
+  <!-- ORGANIZER LOCAL BACKUP / EXPORT -->
+  <div class="admin-bar">
+    <button onclick="downloadLocalBackup()">Organizer: Export Local CSV Backup</button>
+  </div>
+</div>
+
+<script>
+  /*************************************************************************
+   * 1. GOOGLE FORMS CONFIGURATION (PASTE YOUR PRE-FILLED LINK HERE)
+   * -----------------------------------------------------------------------
+   * How to connect in 60 seconds:
+   * 1. Create a Google Form with 6 Short Answer / Paragraph questions in this exact order:
+   *    (1) Full Name
+   *    (2) Year of Study
+   *    (3) ID Number
+   *    (4) Auto-Score & Time
+   *    (5) Quick Answers Summary
+   *    (6) Detailed Written Reasoning (For Judging)
+   * 2. Click the top-right 3 dots in Google Forms -> "Get pre-filled link".
+   * 3. Type "test" into every field, click "Get link" -> "Copy link", and
+   *    paste that entire URL inside the quotes below!
+   *************************************************************************/
+  const PREFILLED_GOOGLE_FORM_URL = "PASTE_YOUR_PREFILLED_GOOGLE_FORM_LINK_HERE";
+
+  // Set to false if you want written explanations to be optional
+  const REQUIRE_WRITTEN_REASONING = true;
+
+  /*************************************************************************
+   * 2. THE 10 EVERYDAY CS LOGIC QUESTIONS
+   *************************************************************************/
+  const QUESTIONS = [
+    {
+      id: 1,
+      title: "The Burnt Toast",
+      scenario: "Four roommates want to make toast. There are only two toasters and two tubs of butter on the counter. To make toast, a person must hold BOTH a toaster and a tub of butter at the exact same time. Roommates 1 and 2 each grab a toaster. Roommates 3 and 4 each grab a tub of butter. Every roommate refuses to put down what they are holding until they get the second item they need. When will breakfast be ready?",
+      options: [
+        "In 2 rounds, once Roommates 1 and 2 finish toasting.",
+        "Never — nobody can ever finish without someone letting go first.",
+        "As soon as Roommates 1 and 3 swap items simultaneously.",
+        "In 4 rounds, going one roommate at a time."
+      ],
+      correctIndex: 1,
+      prompt: "Briefly explain why this happens or what rule would fix it:"
+    },
+    {
+      id: 2,
+      title: "The Dictionary Race",
+      scenario: "I am thinking of a word in a 1,000-page dictionary. Every time you guess a page number, I will only tell you if my word is on that page, comes BEFORE that page, or comes AFTER that page. What is the smartest strategy to guarantee finding the exact page in 10 guesses or fewer?",
+      options: [
+        "Guess in jumps of 100 pages (100, 200, 300...) and then count backward.",
+        "Start at Page 500 and repeatedly cut the remaining section in half with every guess.",
+        "Pick 10 random page numbers spread evenly across the book.",
+        "Start at Page 1 and flip forward by doubling your jump size each time."
+      ],
+      correctIndex: 1,
+      prompt: "Explain why your chosen strategy guarantees finding the page in at most 10 tries:"
+    },
+    {
+      id: 3,
+      title: "The Mislabeled Vending Machine",
+      scenario: "A vending machine has three buttons: 'Cola', 'Root Beer', and 'Surprise (Random Mix of Both)'. The technician wired the labels completely wrong — EVERY single button is guaranteed to be mislabeled. You only have enough coins to press ONE button and see ONE can come out. Which button should you press to know the true identity of all three buttons with 100% certainty?",
+      options: [
+        "Press the 'Cola' button",
+        "Press the 'Root Beer' button",
+        "Press the 'Surprise (Mix)' button",
+        "It is impossible to know all three by pressing only one button"
+      ],
+      correctIndex: 2,
+      prompt: "Walk the judges through how pressing that one button reveals the other two:"
+    },
+    {
+      id: 4,
+      title: "The Cafeteria Tray Tower",
+      scenario: "A cafeteria worker washes plates one by one in the exact order they are numbered: 1, 2, 3, 4, 5. As soon as a plate is washed, it is placed on top of a single stack. At any moment between washes, a chef can walk by and take ONLY the top plate off the stack. Could the chef ever end up serving plates in the exact order: 3, 5, 4, 1, 2?",
+      options: [
+        "Yes, if the chef waits until all 5 plates are washed first.",
+        "Yes, by taking plate 3 early, then waiting for 4 and 5.",
+        "No, because plate 2 will be sitting on top of plate 1 at the end.",
+        "No, because plate 5 can never be served before plate 4."
+      ],
+      correctIndex: 2,
+      prompt: "Explain why this serving order works or where it gets stuck:"
+    },
+    {
+      id: 5,
+      title: "The Strict Bouncer",
+      scenario: "A nightclub bouncer is given a strict rule: 'You can ONLY let someone in if they are wearing a blazer AND they are on the VIP list.' If the bouncer turns someone away at the door, what do we know for sure about that person?",
+      options: [
+        "They are neither wearing a blazer nor on the VIP list.",
+        "They are EITHER not wearing a blazer, OR not on the VIP list (or missing both).",
+        "They are definitely not on the VIP list.",
+        "They are wearing a blazer, but forgot their ID."
+      ],
+      correctIndex: 1,
+      prompt: "Explain why the other choices are logically flawed:"
+    },
+    {
+      id: 6,
+      title: "The Pitch-Black Theatre",
+      scenario: "You are sitting in a pitch-black movie theater and want to know what row number you are in, but nobody is allowed to stand up. You tap the person directly in front of you and ask, 'What row are you in?' They don't know either, so they tap the person in front of them, and so on, until it reaches the person in the very front row, who touches the stage wall and realizes, 'I'm in Row 1!' How does that information travel back so you know your exact row?",
+      options: [
+        "The front person shouts 'Row 1' and everyone guesses their distance from the sound.",
+        "Each person takes the number told to them by the row ahead, adds 1 to it, and passes that new number backward.",
+        "Everyone counts the total seats in their own row and divides by the theater width.",
+        "Each person subtracts 1 from the total number of rows in the cinema."
+      ],
+      correctIndex: 1,
+      prompt: "Why was the stage wall necessary for this process to finish?"
+    },
+    {
+      id: 7,
+      title: "The Secret Tip Jar",
+      scenario: "Three friends want to calculate the exact average amount of cash they have in their pockets, but nobody wants anyone else to figure out their individual amount. They only have a scrap of paper and a pen. How can they get the true average while keeping their individual cash amounts completely secret?",
+      options: [
+        "Each person writes their true number on the paper, folds it, and Person C divides the total by 3.",
+        "Person A starts by adding a secret random fake number to their real cash; B and C add their real cash to that running total; then A subtracts the fake number at the end before dividing by 3.",
+        "Each person rounds their cash to the nearest $10 so their exact amount stays hidden.",
+        "Person A tells Person B their amount, B averages those two and tells C."
+      ],
+      correctIndex: 1,
+      prompt: "Explain why Person Bcannot deduce Person A's cash amount when passed the paper:"
+    },
+    {
+      id: 8,
+      title: "The Counterfeit Coin",
+      scenario: "You have 9 gold coins that look identical, but 1 is counterfeit and is slightly lighter than the other 8. You have an old-fashioned two-sided balance scale (it only tips left, tips right, or stays balanced). How can you guarantee finding the fake coin using the scale ONLY TWICE?",
+      options: [
+        "Weigh 4 against 4 first; if they balance, the 9th coin is fake.",
+        "Split the 9 coins into three piles of 3. Weigh 3 against 3 first, then weigh 1 against 1 from the lighter group of 3.",
+        "Weigh 5 against 4 first, then split the lighter group in half.",
+        "It takes at least 3 weighings to find 1 fake coin out of 9."
+      ],
+      correctIndex: 1,
+      prompt: "Explain why weighing 4 coins against 4 coins in Step 1 fails in the worst case:"
+    },
+    {
+      id: 9,
+      title: "The Delivery Van Dilemma",
+      scenario: "Your delivery box can hold at most 10 kg. There are three packages available:\n• Package A: 6 kg — pays $36 ($6 per kg)\n• Package B: 5 kg — pays $25 ($5 per kg)\n• Package C: 5 kg — pays $25 ($5 per kg)\nIf you follow a strict rule: 'Always pack the item with the highest pay-per-kg first,' how much money do you make compared to the best possible combination?",
+      options: [
+        "You make $36 (Package A only), missing out on the $50 maximum from taking Packages B and C together.",
+        "You make $61 by taking Package A and squeezing in Package B.",
+        "You make $50 because the highest rate per kg always gives the highest total payout.",
+        "You make $86 by taking all three in two trips."
+      ],
+      correctIndex: 0,
+      prompt: "In your own words, why did picking the highest rate per kilogram fail here?"
+    },
+    {
+      id: 10,
+      title: "The Island Ferry",
+      scenario: "A farmer must transport a Wolf, a Goat, and a Cabbage across a river. His boat only holds himself and ONE item at a time. If left alone together without the farmer, the Wolf eats the Goat, and the Goat eats the Cabbage. After taking the Goat across first and returning to pick up the Wolf, what is the critical move the farmer must make on the far bank?",
+      options: [
+        "Leave the Wolf with the Goat and hurry back for the Cabbage.",
+        "Drop off the Wolf, but bring the Goat BACK across the river with him to the starting bank.",
+        "Tie the Cabbage to the boat so it floats behind while carrying the Wolf.",
+        "Take the Cabbage first instead of the Goat."
+      ],
+      correctIndex: 1,
+      prompt: "Write out the full sequence of trips from start to finish:"
+    }
+  ];
+
+  let startTime = null;
+  let timerInterval = null;
+  let secondsElapsed = 0;
+
+  function renderQuestions() {
+    const container = document.getElementById("questions-container");
+    container.innerHTML = QUESTIONS.map((q, idx) => `
+      <div class="card">
+        <div class="question-number">Puzzle ${idx + 1} of ${QUESTIONS.length}</div>
+        <h2>${q.title}</h2>
+        <div class="scenario">${q.scenario.replace(/\n/g, "<br>")}</div>
+        <div class="options-list">
+          ${q.options.map((opt, oIdx) => `
+            <label class="option-label">
+              <input type="radio" name="q_${q.id}" value="${oIdx}" onchange="updateProgress()" />
+              <span>${opt}</span>
+            </label>
+          `).join("")}
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="reason_${q.id}">${q.prompt} ${REQUIRE_WRITTEN_REASONING ? "*" : "(Optional)"}</label>
+          <textarea id="reason_${q.id}" rows="2" placeholder="Type your logic here for the judges..." oninput="updateProgress()"></textarea>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function startQuiz() {
+    const name = document.getElementById("student-name").value.trim();
+    const year = document.getElementById("student-year").value.trim();
+    const id = document.getElementById("student-id").value.trim();
+
+    if (!name || !year || !id) {
+      document.getElementById("reg-error").style.display = "block";
+      return;
+    }
+
+    document.getElementById("reg-error").style.display = "none";
+    document.getElementById("display-participant").textContent = `${name} (${year})`;
+    document.getElementById("display-id").textContent = `ID: ${id}`;
+
+    renderQuestions();
+    document.getElementById("registration-screen").classList.add("hidden");
+    document.getElementById("quiz-screen").classList.remove("hidden");
+
+    startTime = Date.now();
+    timerInterval = setInterval(() => {
+      secondsElapsed = Math.floor((Date.now() - startTime) / 1000);
+      const mins = String(Math.floor(secondsElapsed / 60)).padStart(2, "0");
+      const secs = String(secondsElapsed % 60).padStart(2, "0");
+      document.getElementById("timer-badge").textContent = `${mins}:${secs}`;
+    }, 1000);
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function updateProgress() {
+    let completed = 0;
+    QUESTIONS.forEach(q => {
+      const selected = document.querySelector(`input[name="q_${q.id}"]:checked`);
+      const reason = document.getElementById(`reason_${q.id}`).value.trim();
+      if (selected && (!REQUIRE_WRITTEN_REASONING || reason.length > 0)) {
+        completed++;
+      }
+    });
+    document.getElementById("progress-badge").textContent = `${completed} / ${QUESTIONS.length} Answered`;
+  }
+
+  function parsePrefilledGoogleForm(prefilledUrl) {
+    if (!prefilledUrl || prefilledUrl.includes("PASTE_YOUR_PREFILLED")) return null;
+    try {
+      const urlObj = new URL(prefilledUrl);
+      const actionUrl = urlObj.origin + urlObj.pathname.replace(/\/viewform.*$/, "/formResponse");
+      const entries = [];
+      for (const [key] of urlObj.searchParams.entries()) {
+        if (key.startsWith("entry.")) {
+          entries.push(key);
+        }
+      }
+      return { actionUrl, entries };
+    } catch (err) {
+      console.error("Invalid Pre-filled Google Form URL:", err);
+      return null;
+    }
+  }
+
+  async function submitQuiz() {
+    const name = document.getElementById("student-name").value.trim();
+    const year = document.getElementById("student-year").value.trim();
+    const studentId = document.getElementById("student-id").value.trim();
+
+    let score = 0;
+    const quickSummaryParts = [];
+    const detailedReportParts = [];
+    const perQuestionStrings = [];
+
+    for (const q of QUESTIONS) {
+      const selectedEl = document.querySelector(`input[name="q_${q.id}"]:checked`);
+      const reasonText = document.getElementById(`reason_${q.id}`).value.trim();
+
+      if (!selectedEl || (REQUIRE_WRITTEN_REASONING && !reasonText)) {
+        document.getElementById("submit-error").style.display = "block";
+        return;
+      }
+
+      const chosenIdx = parseInt(selectedEl.value, 10);
+      const isCorrect = chosenIdx === q.correctIndex;
+      if (isCorrect) score++;
+
+      const statusTag = isCorrect ? "CORRECT" : "WRONG";
+      quickSummaryParts.push(`Q${q.id}: ${statusTag}`);
+
+      const fullBlock = `[Q${q.id}: ${q.title}] (${statusTag})\nSelected: ${q.options[chosenIdx]}\nReasoning: ${reasonText || "N/A"}`;
+      detailedReportParts.push(fullBlock);
+      perQuestionStrings.push(`${statusTag} | Choice: ${q.options[chosenIdx]} | Logic: ${reasonText || "N/A"}`);
+    }
+
+    document.getElementById("submit-error").style.display = "none";
+    const submitBtn = document.getElementById("submit-btn");
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting to Judges...";
+
+    clearInterval(timerInterval);
+    const timeFormatted = document.getElementById("timer-badge").textContent;
+    const scoreAndTime = `${score} / ${QUESTIONS.length} (Time: ${timeFormatted})`;
+    const quickSummary = quickSummaryParts.join(" | ");
+    const detailedReasoning = detailedReportParts.join("\n\n");
+
+    // 1. Save to LocalStorage as fail-safe backup
+    const localRecord = {
+      timestamp: new Date().toISOString(),
+      name,
+      year,
+      studentId,
+      score,
+      timeFormatted,
+      quickSummary,
+      detailedReasoning
+    };
+    const existing = JSON.parse(localStorage.getItem("cs_logic_submissions") || "[]");
+    existing.push(localRecord);
+    localStorage.setItem("cs_logic_submissions", JSON.stringify(existing));
+
+    // 2. Push directly to Google Forms if configured
+    const parsedForm = parsePrefilledGoogleForm("https://docs.google.com/forms/d/1swHyuNMWb_sXbi0FS5IEqdW7_cNFeffkyIgppxSsvC0/prefill");
+    if (parsedForm && parsedForm.entries.length >= 3) {
+      const formData = new URLSearchParams();
+      const e = parsedForm.entries;
+
+      // Always map the first 3 fields to Name, Year, ID Number
+      formData.append(e[0], name);
+      formData.append(e[1], year);
+      formData.append(e[2], studentId);
+
+      if (e.length >= 13) {
+        // If the organizer created individual fields for all 10 questions
+        if (e.length >= 14) {
+          formData.append(e[3], scoreAndTime);
+          perQuestionStrings.forEach((ans, i) => formData.append(e[4 + i], ans));
+        } else {
+          perQuestionStrings.forEach((ans, i) => formData.append(e[3 + i], ans));
+        }
+      } else {
+        // Standard 6-field judge setup: [Name, Year, ID, Score/Time, Quick Summary, Detailed Reasoning]
+        if (e[3]) formData.append(e[3], scoreAndTime);
+        if (e[4]) formData.append(e[4], quickSummary);
+        if (e[5]) formData.append(e[5], detailedReasoning);
+      }
+
+      try {
+        await fetch(parsedForm.actionUrl, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: formData.toString()
+        });
+      } catch (err) {
+        console.warn("Google Form push error (saved locally):", err);
+      }
+    }
+
+    // 3. Show Confirmation Screen
+    document.getElementById("quiz-screen").classList.add("hidden");
+    document.getElementById("result-screen").classList.remove("hidden");
+    document.getElementById("submission-summary").textContent =
+      `Thank you, ${name} (${studentId}). Completed in ${timeFormatted}.`;
+  }
+
+  function downloadLocalBackup() {
+    const data = JSON.parse(localStorage.getItem("cs_logic_submissions") || "[]");
+    if (data.length === 0) {
+      alert("No local submissions stored on this device yet.");
+      return;
+    }
+    const headers = ["Timestamp", "Name", "Year", "ID Number", "Auto Score", "Time", "Quick Summary", "Detailed Reasoning"];
+    const rows = data.map(r => [
+      r.timestamp,
+      r.name,
+      r.year,
+      r.studentId,
+      r.score,
+      r.timeFormatted,
+      r.quickSummary,
+      r.detailedReasoning.replace(/\n/g, " // ")
+    ].map(val => `"${String(val).replace(/"/g, '""')}"`).join(","));
+
+    const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows].join("\n");
+    const link = document.createElement("a");
+    link.setAttribute("href", encodeURI(csvContent));
+    link.setAttribute("download", "logic_quiz_backup.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+</script>
+
+</body>
+</html>
